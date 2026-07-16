@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Entendendo o luto · Thiago Guedes</title>
+<style>
+  :root{
+    --bg:#F7F4EE;
+    --surface:#FFFFFF;
+    --ink:#20312B;
+    --muted:#5E6B62;
+    --line:#E2DDD2;
+    --pine:#12332B;
+    --pine-2:#1C4A3E;
+    --on-pine:#EDE7DA;
+    --gold:#C9A876;
+    --terra:#B5502F;
+    --terra-soft:#F6E8E1;
+    --sage:#5F7A55;
+    --sage-soft:#EDF1E7;
+    --heart:#C05B4D;
+    --heart-soft:#F7E9E6;
+    --teal:#2E6B5E;
+    --teal-soft:#E6F0EC;
+    --tan:#C7A97F;
+    --tan-soft:#F4ECDD;
+    --radius:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#101C18;
+      --surface:#182924;
+      --ink:#E8E4D9;
+      --muted:#A5B0A6;
+      --line:#2B403A;
+      --pine:#0C221D;
+      --on-pine:#E8E4D9;
+      --terra-soft:#3A241B;
+      --sage-soft:#22301F;
+      --heart-soft:#3A2420;
+      --teal-soft:#1C332D;
+      --tan-soft:#332C1E;
+    }
+  }
+  html.tema-escuro{
+    --bg:#101C18; --surface:#182924; --ink:#E8E4D9; --muted:#A5B0A6;
+    --line:#2B403A; --pine:#0C221D; --on-pine:#E8E4D9;
+    --terra-soft:#3A241B; --sage-soft:#22301F; --heart-soft:#3A2420;
+    --teal-soft:#1C332D; --tan-soft:#332C1E;
+  }
+  html.tema-claro{
+    --bg:#F7F4EE; --surface:#FFFFFF; --ink:#20312B; --muted:#5E6B62;
+    --line:#E2DDD2; --pine:#12332B; --on-pine:#EDE7DA;
+    --terra-soft:#F6E8E1; --sage-soft:#EDF1E7; --heart-soft:#F7E9E6;
+    --teal-soft:#E6F0EC; --tan-soft:#F4ECDD;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  }
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:17px;line-height:1.65;
+  }
+  .serif{font-family:Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:-.01em}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px}
+
+  /* Topo */
+  .topbar{
+    background:var(--pine);color:var(--on-pine);
+    padding:18px 0 16px;
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:12px}
+  .marca{display:flex;align-items:center;gap:10px;flex:1}
+  .marca .nome{line-height:1.15}
+  .marca .nome b{font-family:Georgia,serif;font-size:19px;font-weight:600;letter-spacing:.01em}
+  .marca .nome small{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  #btnTema{
+    display:none;background:none;border:1px solid rgba(255,255,255,.25);
+    color:var(--on-pine);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;
+  }
+
+  #progress{
+    background:var(--pine);color:var(--on-pine);padding:0 0 14px;
+  }
+  #progress[hidden]{display:none}
+  #progress .wrap{display:flex;align-items:center;gap:12px}
+  #progress .rotulo{font-size:12px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;opacity:.85}
+  #progress .bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.18);overflow:hidden}
+  #progress .fill{height:100%;width:0%;background:var(--gold);border-radius:3px;transition:width .4s ease}
+  #progress .count{font-size:12.5px;white-space:nowrap;opacity:.9}
+
+  /* Navegação por âncoras */
+  nav{
+    position:sticky;top:0;z-index:10;
+    background:var(--bg);border-bottom:1px solid var(--line);
+  }
+  nav .trilho{
+    display:flex;gap:8px;overflow-x:auto;padding:10px 20px;
+    max-width:640px;margin:0 auto;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  nav .trilho::-webkit-scrollbar{display:none}
+  nav a{
+    flex:none;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);background:var(--surface);
+    border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;
+  }
+
+  /* Hero */
+  .hero{padding:40px 0 8px}
+  .hero .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:12px}
+  .hero h1{font-size:clamp(30px,7.5vw,40px);line-height:1.15;margin-bottom:14px}
+  .hero p{color:var(--muted);max-width:52ch}
+  .hero .cerebro{display:flex;justify-content:center;margin:22px 0 6px;color:var(--pine-2)}
+  html.tema-escuro .hero .cerebro, :root .hero .cerebro{opacity:.95}
+  .cta-leitura{
+    display:inline-block;margin-top:18px;background:var(--pine);color:var(--on-pine);
+    text-decoration:none;font-weight:700;font-size:15.5px;
+    padding:13px 22px;border-radius:10px;
+  }
+
+  .citacao{
+    margin:30px 0 0;background:var(--pine);color:var(--on-pine);
+    border-radius:var(--radius);padding:22px 24px;
+    font-family:Georgia,serif;font-style:italic;font-size:18px;line-height:1.55;
+    position:relative;
+  }
+  .citacao::before{content:"\201C";position:absolute;top:6px;left:14px;font-size:44px;color:var(--gold);font-style:normal}
+  .citacao span{display:block;padding-left:26px}
+
+  section{padding-top:44px}
+  h2{font-size:26px;line-height:1.2;margin-bottom:6px}
+  .sec-desc{color:var(--muted);font-size:15.5px;margin-bottom:18px;max-width:56ch}
+
+  /* Cartões clicáveis */
+  .cards{display:grid;gap:12px}
+  details.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  summary.card-head{
+    display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
+    list-style:none;-webkit-tap-highlight-color:transparent;
+  }
+  summary.card-head::-webkit-details-marker{display:none}
+  summary.card-head::marker{content:""}
+  summary.card-head:focus-visible{outline:3px solid var(--teal);outline-offset:-3px;border-radius:var(--radius)}
+  .icone{
+    width:46px;height:46px;border-radius:50%;flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icone svg{width:22px;height:22px}
+  .i-pine{background:var(--pine-2);color:#fff}
+  .i-sage{background:var(--sage);color:#fff}
+  .i-heart{background:var(--heart);color:#fff}
+  .i-tan{background:var(--tan);color:#fff}
+  .i-terra{background:var(--terra);color:#fff}
+  .card-tit{flex:1}
+  .card-tit b{display:block;font-size:16.5px;line-height:1.3}
+  .card-tit small{display:block;color:var(--muted);font-size:13.5px;line-height:1.4;margin-top:2px}
+  .chev{flex:none;transition:transform .25s;color:var(--muted)}
+  details[open] .chev{transform:rotate(180deg)}
+  .card-body{padding:0 18px 18px 78px;color:var(--muted);font-size:15.5px}
+  @media (max-width:430px){.card-body{padding-left:18px}}
+  .card-body p{color:var(--ink)}
+  .card-body p + p{margin-top:10px}
+
+  .nota{
+    margin-top:16px;background:var(--tan-soft);border:1px solid var(--line);
+    border-radius:12px;padding:14px 18px;font-size:15px;
+  }
+  .nota b{color:var(--terra)}
+
+  /* Exercício */
+  .exercicio{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .exercicio h3{font-size:19px;margin-bottom:4px}
+  .exercicio > p{color:var(--muted);font-size:14.5px;margin-bottom:16px}
+  .ex-linha{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:baseline;padding:10px 0;border-top:1px dashed var(--line)}
+  .ex-linha b{font-size:15px}
+  .ex-linha span{color:var(--muted);font-size:14px;border-bottom:1.5px dashed var(--line);padding-bottom:14px}
+  @media (max-width:430px){.ex-linha{grid-template-columns:1fr;gap:2px}}
+
+  /* CTA final */
+  .btn-zap{
+    display:inline-block;margin-top:16px;background:var(--pine);color:var(--on-pine);
+    text-decoration:none;font-weight:700;font-size:15.5px;padding:13px 22px;border-radius:10px;
+  }
+
+  .cta-fim{
+    margin-top:44px;background:var(--pine);color:var(--on-pine);
+    border-radius:var(--radius);padding:26px 24px;
+  }
+  .cta-fim h3{font-family:Georgia,serif;font-size:21px;font-weight:600;margin-bottom:6px}
+  .cta-fim p{font-size:15px;opacity:.9;max-width:46ch}
+  .cta-fim a{
+    display:inline-block;margin-top:16px;background:var(--terra);color:#fff;
+    text-decoration:none;font-weight:700;font-size:15.5px;padding:13px 22px;border-radius:10px;
+  }
+
+  footer{margin-top:40px;padding:22px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+  footer b{color:var(--ink);font-family:Georgia,serif;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="marca">
+      <div class="nome"><b>Thiago Guedes</b><small>Psicologia baseada em evidências</small></div>
+    </div>
+    <button id="btnTema" type="button">Modo escuro</button>
+  </div>
+</div>
+
+<div id="progress" hidden>
+  <div class="wrap">
+    <span class="rotulo">Seu progresso</span>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<nav aria-label="Seções do material">
+  <div class="trilho">
+    <a href="#introducao">Introdução</a>
+    <a href="#fases">Fases do luto</a>
+    <a href="#enfrentamento">Enfrentamento</a>
+    <a href="#sinais">Quando buscar ajuda</a>
+    <a href="#exercicio">Exercício</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="hero" id="introducao" style="padding-top:40px">
+  <p class="eyebrow">Acolhimento e compreensão</p>
+  <h1 class="serif">Entendendo o luto e suas fases</h1>
+  <p>O luto é uma resposta humana à perda. Ele pode envolver tristeza, saudade, raiva, culpa, confusão e mudanças na rotina. Cada pessoa vive esse processo de um jeito próprio, sem uma ordem fixa ou prazo obrigatório.</p>
+  <div class="cerebro" aria-hidden="true">
+    <svg width="150" height="120" viewBox="0 0 150 120" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M75 102C49 85 28 68 28 43c0-15 11-27 26-27 9 0 17 4 21 11 4-7 12-11 21-11 15 0 26 12 26 27 0 25-21 42-47 59z"/>
+      <path d="M50 47c7-8 18-9 25-2M44 61c10-5 21-4 30 3M100 48c-6-7-15-8-22-3M104 63c-8-5-17-4-25 2" opacity=".7"/>
+      <path d="M75 27v64" opacity=".45"/>
+    </svg>
+  </div>
+  <a class="cta-leitura" href="#fases">Começar leitura →</a>
+  <div class="citacao"><span>O luto não é esquecer. É aprender a continuar vivendo com a ausência e com tudo o que permanece dentro de nós.</span></div>
+</section>
+
+<section id="fases">
+  <h2 class="serif">As fases do luto</h2>
+  <p class="sec-desc">As fases abaixo ajudam a compreender experiências comuns, mas não funcionam como uma escada. Elas podem se misturar, repetir ou nem aparecer da mesma forma para todas as pessoas.</p>
+  <div class="cards">
+    <details class="card">
+      <summary class="card-head"><span class="icone i-pine">1</span><span class="card-tit"><b>Negação e choque</b><small>Dificuldade inicial para assimilar a realidade da perda.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary>
+      <div class="card-body"><p>A pessoa pode se sentir anestesiada, confusa ou agir como se nada tivesse acontecido. Esse estado pode funcionar como uma proteção temporária diante de algo emocionalmente intenso.</p><p>Não significa falta de amor ou indiferença. Muitas vezes, é apenas a mente tentando absorver a realidade aos poucos.</p></div>
+    </details>
+    <details class="card">
+      <summary class="card-head"><span class="icone i-terra">2</span><span class="card-tit"><b>Raiva</b><small>Revolta, irritação e sensação de injustiça.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary>
+      <div class="card-body"><p>A raiva pode ser direcionada à situação, a outras pessoas, a profissionais, a si mesmo ou até a quem morreu. Ela costuma aparecer quando a perda começa a ser percebida com mais clareza.</p><p>Reconhecer a raiva sem se julgar ajuda a compreender o que existe por trás dela: dor, impotência, medo ou saudade.</p></div>
+    </details>
+    <details class="card">
+      <summary class="card-head"><span class="icone i-tan">3</span><span class="card-tit"><b>Barganha</b><small>Pensamentos sobre o que poderia ter sido diferente.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary>
+      <div class="card-body"><p>É comum surgirem pensamentos como “se eu tivesse feito outra coisa...” ou “se isso não tivesse acontecido...”. A mente tenta recuperar algum senso de controle sobre uma situação que já não pode ser modificada.</p><p>Esses pensamentos merecem acolhimento, mas também precisam ser examinados com cuidado para que não se transformem em culpa excessiva.</p></div>
+    </details>
+    <details class="card">
+      <summary class="card-head"><span class="icone i-heart">4</span><span class="card-tit"><b>Tristeza e recolhimento</b><small>Contato mais profundo com a ausência e a saudade.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary>
+      <div class="card-body"><p>Podem aparecer choro, cansaço, menor interesse, silêncio, dificuldade de concentração e vontade de ficar mais sozinho. A tristeza é uma resposta esperada diante de uma perda importante.</p><p>O cuidado está em observar intensidade, duração e impacto na vida, sem exigir que a pessoa “supere” rapidamente.</p></div>
+    </details>
+    <details class="card">
+      <summary class="card-head"><span class="icone i-sage">5</span><span class="card-tit"><b>Aceitação e adaptação</b><small>Construção de uma nova forma de viver com a realidade.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary>
+      <div class="card-body"><p>Aceitar não é gostar do que aconteceu nem deixar de sentir saudade. É reconhecer a realidade e, aos poucos, reorganizar a vida, os vínculos e os projetos.</p><p>A dor pode continuar existindo, mas passa a ocupar um lugar mais possível dentro da história da pessoa.</p></div>
+    </details>
+  </div>
+  <div class="nota"><b>Importante:</b> não existe um tempo certo para o luto, nem uma sequência obrigatória. O processo é individual e pode oscilar.</div>
+</section>
+
+<section id="enfrentamento">
+  <h2 class="serif">Conceitos básicos de enfrentamento</h2>
+  <p class="sec-desc">Estratégias simples que podem ajudar a atravessar o processo com mais cuidado e menos isolamento.</p>
+  <div class="cards">
+    <details class="card"><summary class="card-head"><span class="icone i-sage">✓</span><span class="card-tit"><b>Permitir sentir</b><small>Dar espaço às emoções sem se cobrar respostas perfeitas.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Evitar completamente a dor costuma aumentar o sofrimento. Tente nomear o que sente e aceitar que diferentes emoções podem aparecer juntas.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-pine">↔</span><span class="card-tit"><b>Alternar contato e descanso</b><small>Nem pensar o tempo todo, nem fugir o tempo todo.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>É saudável alternar momentos de contato com a saudade e momentos de descanso, lazer ou rotina. Essa oscilação faz parte da adaptação.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-tan">☀</span><span class="card-tit"><b>Manter uma rotina mínima</b><small>Preservar sono, alimentação, higiene e pequenos compromissos.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Em períodos difíceis, metas pequenas são mais úteis do que grandes cobranças. Levantar, tomar banho, comer e caminhar alguns minutos já podem ser passos importantes.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-heart">♥</span><span class="card-tit"><b>Buscar apoio</b><small>Compartilhar com pessoas seguras e respeitosas.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Falar com alguém de confiança pode diminuir o isolamento. Também é possível pedir ajuda prática, como companhia, refeições, transporte ou organização de tarefas.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-terra">✦</span><span class="card-tit"><b>Criar formas de lembrança</b><small>Integrar a memória à própria história.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Cartas, álbuns, rituais, objetos simbólicos e conversas sobre boas lembranças podem ajudar a manter um vínculo afetivo saudável com quem partiu.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-sage">◎</span><span class="card-tit"><b>Reduzir decisões impulsivas</b><small>Dar tempo antes de mudanças muito grandes.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Quando possível, evite tomar decisões definitivas no auge da dor. A intensidade emocional pode alterar a percepção de riscos, necessidades e consequências.</p></div></details>
+  </div>
+</section>
+
+<section id="sinais">
+  <h2 class="serif">Quando buscar ajuda profissional</h2>
+  <p class="sec-desc">O acompanhamento psicológico pode ser útil em qualquer fase, especialmente quando o sofrimento começa a impedir a vida de continuar.</p>
+  <div class="cards">
+    <details class="card"><summary class="card-head"><span class="icone i-terra">!</span><span class="card-tit"><b>Sofrimento muito intenso e persistente</b><small>Quando a dor não apresenta nenhuma redução ao longo do tempo.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Procure ajuda quando houver incapacidade prolongada de retomar atividades básicas, isolamento intenso, culpa incapacitante ou prejuízo importante no trabalho, estudo e relações.</p></div></details>
+    <details class="card"><summary class="card-head"><span class="icone i-heart">+</span><span class="card-tit"><b>Sintomas físicos e emocionais importantes</b><small>Alterações intensas de sono, alimentação, ansiedade ou uso de substâncias.</small></span><svg class="chev" width="16" height="16" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></summary><div class="card-body"><p>Ajuda profissional é indicada quando a pessoa sente que não consegue lidar sozinha, ou quando surgem comportamentos que colocam sua saúde e segurança em risco.</p></div></details>
+  </div>
+</section>
+
+<section id="exercicio">
+  <h2 class="serif">Exercício de acolhimento</h2>
+  <p class="sec-desc">Pare alguns minutos e responda com sinceridade, sem tentar organizar tudo perfeitamente.</p>
+  <div class="exercicio">
+    <h3 class="serif">Como estou vivendo meu luto hoje?</h3>
+    <p>Use as perguntas como um ponto de partida para observar suas necessidades.</p>
+    <div class="ex-linha"><b>O que sinto</b><span>Quais emoções estão mais presentes hoje?</span></div>
+    <div class="ex-linha"><b>Do que preciso</b><span>Descanso, companhia, silêncio, ajuda prática ou conversa?</span></div>
+    <div class="ex-linha"><b>O que pesa</b><span>Existe culpa, raiva ou pensamento recorrente aumentando a dor?</span></div>
+    <div class="ex-linha"><b>Um passo possível</b><span>Qual pequena ação de cuidado posso realizar hoje?</span></div>
+    <a class="btn-zap" href="https://wa.me/5561992866147?text=Ol%C3%A1%2C%20Dr.%20Thiago!%20Fiz%20o%20exerc%C3%ADcio%20sobre%20luto%3A%0A%0AO%20que%20sinto%3A%20%0A%0ADo%20que%20preciso%3A%20%0A%0AO%20que%20pesa%3A%20%0A%0AUm%20passo%20poss%C3%ADvel%3A%20">Enviar minha reflexão no WhatsApp →</a>
+  </div>
+  <div class="nota">Ao tocar no botão, uma mensagem será aberta no WhatsApp com as perguntas já organizadas para você completar.</div>
+</section>
+
+<div class="cta-fim">
+  <h3>Você não precisa atravessar o luto sozinho(a).</h3>
+  <p>Buscar apoio não apaga a saudade. Ajuda a construir um caminho possível para continuar vivendo com significado.</p>
+  <a href="https://wa.me/5561992866147?text=Ol%C3%A1%2C%20Dr.%20Thiago!%20Gostaria%20de%20conversar%20sobre%20o%20processo%20de%20luto.">Fale com seu psicólogo →</a>
+</div>
+
+<footer>
+  <p><b>Thiago Guedes</b> · Psicologia baseada em evidências</p>
+  <p style="margin-top:4px">Dr. Thiago Lima Guedes · Neuropsicólogo · CRP 01/12730</p>
+  <p style="margin-top:4px">thiagoguedes6@gmail.com</p>
+  <p style="margin-top:12px">Este material é psicoeducativo e complementa as sessões. Ele não substitui avaliação nem acompanhamento profissional.</p>
+</footer>
+
+</main>
+
+<script>
+  (function(){
+    var cards = Array.prototype.slice.call(document.querySelectorAll('details.card'));
+    var total = cards.length;
+    var read = 0;
+    var progress = document.getElementById('progress');
+    var fill = document.getElementById('fill');
+    var count = document.getElementById('count');
+    progress.hidden = false;
+    count.textContent = '0 de ' + total + ' tópicos';
+    cards.forEach(function(card){
+      card.addEventListener('toggle', function(){
+        if(card.open && !card.dataset.lido){
+          card.dataset.lido = '1'; read++;
+          fill.style.width = Math.round(read/total*100) + '%';
+          count.textContent = read + ' de ' + total + ' tópicos';
+        }
+      });
+    });
+    var btn = document.getElementById('btnTema');
+    btn.style.display = 'inline-block';
+    var raiz = document.documentElement;
+    var escuroSistema = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    function atualiza(){
+      var escuro = raiz.classList.contains('tema-escuro') || (escuroSistema && !raiz.classList.contains('tema-claro'));
+      btn.textContent = escuro ? 'Modo claro' : 'Modo escuro';
+    }
+    btn.addEventListener('click', function(){
+      var escuroAtivo = raiz.classList.contains('tema-escuro') || (escuroSistema && !raiz.classList.contains('tema-claro'));
+      raiz.classList.remove('tema-escuro','tema-claro');
+      raiz.classList.add(escuroAtivo ? 'tema-claro' : 'tema-escuro');
+      atualiza();
+    });
+    atualiza();
+  })();
+</script>
+</body>
+</html>
